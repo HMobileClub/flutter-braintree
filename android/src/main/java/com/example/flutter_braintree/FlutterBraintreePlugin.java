@@ -1,14 +1,14 @@
 package com.example.flutter_braintree;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 
-import com.braintreepayments.api.dropin.DropInActivity;
-import com.braintreepayments.api.dropin.DropInRequest;
-import com.braintreepayments.api.dropin.DropInResult;
-import com.braintreepayments.api.models.PaymentMethodNonce;
+import com.braintreepayments.api.BraintreeClient;
+import com.braintreepayments.api.DropInClient;
+import com.google.gson.Gson;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import io.flutter.embedding.engine.plugins.FlutterPlugin;
@@ -27,56 +27,36 @@ public class FlutterBraintreePlugin implements FlutterPlugin, ActivityAware, Met
   private Activity activity;
   private Result activeResult;
 
-  private FlutterBraintreeDropIn dropIn;
-
-  public static void registerWith(Registrar registrar) {
-    FlutterBraintreeDropIn.registerWith(registrar);
-    final MethodChannel channel = new MethodChannel(registrar.messenger(), "flutter_braintree.custom");
-    FlutterBraintreePlugin plugin = new FlutterBraintreePlugin();
-    plugin.activity = registrar.activity();
-    registrar.addActivityResultListener(plugin);
-    channel.setMethodCallHandler(plugin);
-  }
-
   @Override
   public void onAttachedToEngine(FlutterPluginBinding binding) {
     final MethodChannel channel = new MethodChannel(binding.getBinaryMessenger(), "flutter_braintree.custom");
     channel.setMethodCallHandler(this);
-
-    dropIn = new FlutterBraintreeDropIn();
-    dropIn.onAttachedToEngine(binding);
   }
 
   @Override
   public void onDetachedFromEngine(FlutterPluginBinding binding) {
-    dropIn.onDetachedFromEngine(binding);
-    dropIn = null;
   }
 
   @Override
   public void onAttachedToActivity(ActivityPluginBinding binding) {
     activity = binding.getActivity();
     binding.addActivityResultListener(this);
-    dropIn.onAttachedToActivity(binding);
   }
 
   @Override
   public void onDetachedFromActivityForConfigChanges() {
     activity = null;
-    dropIn.onDetachedFromActivity();
   }
 
   @Override
   public void onReattachedToActivityForConfigChanges(ActivityPluginBinding binding) {
     activity = binding.getActivity();
     binding.addActivityResultListener(this);
-    dropIn.onReattachedToActivityForConfigChanges(binding);
   }
 
   @Override
   public void onDetachedFromActivity() {
     activity = null;
-    dropIn.onDetachedFromActivity();
   }
 
   @Override
@@ -88,7 +68,6 @@ public class FlutterBraintreePlugin implements FlutterPlugin, ActivityAware, Met
     activeResult = result;
 
     if (call.method.equals("tokenizeCreditCard")) {
-      String authorization = call.argument("authorization");
       Intent intent = new Intent(activity, FlutterBraintreeCustom.class);
       intent.putExtra("type", "tokenizeCreditCard");
       intent.putExtra("authorization", (String) call.argument("authorization"));
@@ -101,7 +80,6 @@ public class FlutterBraintreePlugin implements FlutterPlugin, ActivityAware, Met
       intent.putExtra("cardholderName", (String) request.get("cardholderName"));
       activity.startActivityForResult(intent, CUSTOM_ACTIVITY_REQUEST_CODE);
     } else if (call.method.equals("requestPaypalNonce")) {
-      String authorization = call.argument("authorization");
       Intent intent = new Intent(activity, FlutterBraintreeCustom.class);
       intent.putExtra("type", "requestPaypalNonce");
       intent.putExtra("authorization", (String) call.argument("authorization"));
@@ -114,6 +92,26 @@ public class FlutterBraintreePlugin implements FlutterPlugin, ActivityAware, Met
       intent.putExtra("payPalPaymentUserAction", (String) request.get("payPalPaymentUserAction"));
       intent.putExtra("billingAgreementDescription", (String) request.get("billingAgreementDescription"));
       activity.startActivityForResult(intent, CUSTOM_ACTIVITY_REQUEST_CODE);
+    } else if (call.method.equals("launchDropIn")) {
+      Log.d("DROP_IN", "onMethodCall: launching");
+      Log.d("DROP_IN", "arguments: " + new Gson().toJson(call.arguments));
+      Intent intent = new Intent(activity, BraintreeDropIn.class);
+      intent.putExtra("clientToken", (String) call.argument("clientToken"));
+      intent.putExtra("tokenizationKey", (String) call.argument("tokenizationKey"));
+
+      intent.putExtra("googlePaymentRequest", (HashMap<String, Object>) call.argument("googlePaymentRequest"));
+      intent.putExtra("paypalRequest", (HashMap<String, Object>)  call.argument("paypalRequest"));
+      intent.putExtra("venmoRequest", (HashMap<String, Object>)  call.argument("venmoRequest"));
+
+      intent.putExtra("maskCardNumber", (Boolean) call.argument("maskCardNumber"));
+      intent.putExtra("maskSecurityCode", (Boolean) call.argument("maskSecurityCode"));
+
+      intent.putExtra("vaultManagerEnabled", (Boolean) call.argument("vaultManagerEnabled"));
+      intent.putExtra("cardDisabled", (Boolean) call.argument("cardDisabled"));
+      intent.putExtra("venmoDisabled", (Boolean) call.argument("venmoDisabled"));
+      intent.putExtra("paypalDisabled", (Boolean) call.argument("paypalDisabled"));
+      intent.putExtra("googlePayDisabled", (Boolean) call.argument("googlePayDisabled"));
+      activity.startActivityForResult(intent, 0x440);
     } else {
       result.notImplemented();
       activeResult = null;

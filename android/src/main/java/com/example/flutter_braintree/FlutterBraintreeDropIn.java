@@ -11,26 +11,24 @@ import io.flutter.plugin.common.PluginRegistry.ActivityResultListener;
 import io.flutter.plugin.common.PluginRegistry.Registrar;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 
-import com.braintreepayments.api.dropin.DropInActivity;
-import com.braintreepayments.api.dropin.DropInRequest;
-import com.braintreepayments.api.dropin.DropInResult;
-import com.braintreepayments.api.models.GooglePaymentRequest;
-import com.braintreepayments.api.models.PayPalRequest;
-import com.braintreepayments.api.models.PaymentMethodNonce;
+import androidx.annotation.NonNull;
 
-import com.google.android.gms.wallet.TransactionInfo;
-import com.google.android.gms.wallet.WalletConstants;
+import com.braintreepayments.api.DropInClient;
+import com.braintreepayments.api.DropInListener;
+import com.braintreepayments.api.DropInResult;
 
-import java.util.HashMap;
+import java.util.Map;
 
-public class FlutterBraintreeDropIn implements FlutterPlugin, ActivityAware, MethodCallHandler, ActivityResultListener {
+
+public class FlutterBraintreeDropIn implements FlutterPlugin, ActivityAware, MethodCallHandler, ActivityResultListener, DropInListener {
   private static final int DROP_IN_REQUEST_CODE = 0x1337;
+  private static final int CUSTOM_ACTIVITY_REQUEST_CODE = 0x440;
 
   private Activity activity;
   private Result activeResult;
+
 
   public static void registerWith(Registrar registrar) {
     final MethodChannel channel = new MethodChannel(registrar.messenger(), "flutter_braintree.drop_in");
@@ -78,6 +76,13 @@ public class FlutterBraintreeDropIn implements FlutterPlugin, ActivityAware, Met
     if (call.method.equals("start")) {
       String clientToken = call.argument("clientToken");
       String tokenizationKey = call.argument("tokenizationKey");
+
+      String authorization = call.argument("authorization");
+      Intent intent = new Intent(activity, FlutterBraintreeCustom.class);
+      intent.putExtra("authorization", (String) call.argument("authorization"));
+      activity.startActivityForResult(intent, CUSTOM_ACTIVITY_REQUEST_CODE);
+
+      /**
       DropInRequest dropInRequest = new DropInRequest()
               .amount((String) call.argument("amount"))
               .collectDeviceData((Boolean) call.argument("collectDeviceData"))
@@ -106,11 +111,13 @@ public class FlutterBraintreeDropIn implements FlutterPlugin, ActivityAware, Met
       }
       this.activeResult = result;
       activity.startActivityForResult(dropInRequest.getIntent(activity), DROP_IN_REQUEST_CODE);
+       */
     } else {
       result.notImplemented();
     }
   }
 
+  /**
   private static void readGooglePaymentParameters(DropInRequest dropInRequest, MethodCall call) {
     HashMap<String, Object> arg = call.argument("googlePaymentRequest");
     if (arg == null) {
@@ -126,8 +133,9 @@ public class FlutterBraintreeDropIn implements FlutterPlugin, ActivityAware, Met
             .billingAddressRequired((Boolean) arg.get("billingAddressRequired"))
             .googleMerchantId((String) arg.get("merchantID"));
     dropInRequest.googlePaymentRequest(googlePaymentRequest);
-  }
+  }/*
 
+/**
   private static void readPayPalParameters(DropInRequest dropInRequest, MethodCall call) {
     HashMap<String, Object> arg = call.argument("paypalRequest");
     if (arg == null) {
@@ -140,7 +148,7 @@ public class FlutterBraintreeDropIn implements FlutterPlugin, ActivityAware, Met
             .displayName((String) arg.get("displayName"))
             .billingAgreementDescription((String) arg.get("billingAgreementDescription"));
     dropInRequest.paypalRequest(paypalRequest);
-  }
+  }*/
 
   @Override
   public boolean onActivityResult(int requestCode, int resultCode, Intent data)  {
@@ -148,6 +156,7 @@ public class FlutterBraintreeDropIn implements FlutterPlugin, ActivityAware, Met
       return false;
 
     switch (requestCode) {
+      /**
       case DROP_IN_REQUEST_CODE:
         if (resultCode == Activity.RESULT_OK) {
           DropInResult dropInResult = data.getParcelableExtra(DropInResult.EXTRA_DROP_IN_RESULT);
@@ -170,9 +179,19 @@ public class FlutterBraintreeDropIn implements FlutterPlugin, ActivityAware, Met
           activeResult.error("braintree_error", error.getMessage(), null);
         }
         activeResult = null;
-        return true;
+        return true;*/
       default:
         return false;
     }
+  }
+
+  @Override
+  public void onDropInSuccess(@NonNull DropInResult dropInResult) {
+
+  }
+
+  @Override
+  public void onDropInFailure(@NonNull Exception error) {
+
   }
 }

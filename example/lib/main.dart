@@ -26,9 +26,9 @@ class _MyAppState extends State<MyApp> {
           children: <Widget>[
             Text('Nonce: ${nonce.nonce}'),
             SizedBox(height: 16),
-            Text('Type label: ${nonce.typeLabel}'),
-            SizedBox(height: 16),
-            Text('Description: ${nonce.description}'),
+            // Text('Type label: ${nonce.typeLabel}'),
+            //SizedBox(height: 16),
+            //Text('Description: ${nonce.description}'),
           ],
         ),
       ),
@@ -48,19 +48,19 @@ class _MyAppState extends State<MyApp> {
             ElevatedButton(
               onPressed: () async {
                 var request = BraintreeDropInRequest(
-                  tokenizationKey: tokenizationKey,
-                  collectDeviceData: true,
-                  googlePaymentRequest: BraintreeGooglePaymentRequest(
-                    totalPrice: '4.20',
-                    currencyCode: 'USD',
-                    billingAddressRequired: false,
-                  ),
-                  paypalRequest: BraintreePayPalRequest(
-                    amount: '4.20',
-                    displayName: 'Example company',
-                  ),
-                  cardEnabled: true,
-                );
+                    tokenizationKey: tokenizationKey,
+                    collectDeviceData: true,
+                    googlePaymentRequest: BraintreeGooglePaymentRequest(
+                      totalPrice: '4.20',
+                      currencyCode: 'USD',
+                      billingAddressRequired: false,
+                    ),
+                    paypalRequest: BraintreePayPalRequest(
+                      amount: '4.20',
+                      displayName: 'Example company',
+                    ),
+                    cardDisabled: true,
+                    venmoDisabled: true);
                 final result = await BraintreeDropIn.start(request);
                 if (result != null) {
                   showNonce(result.paymentMethodNonce);
