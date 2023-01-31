@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 class BraintreeDropInResult {
   const BraintreeDropInResult({
     required this.paymentMethodNonce,
@@ -29,7 +27,6 @@ class BraintreePaymentMethodNonce {
   });
 
   factory BraintreePaymentMethodNonce.fromJson(dynamic source) {
-    log("returning");
     return BraintreePaymentMethodNonce(
       nonce: source['nonce'],
       isDefault: source['isDefault'],

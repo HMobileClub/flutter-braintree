@@ -2,11 +2,9 @@ package com.example.flutter_braintree;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.util.Log;
 
 import com.braintreepayments.api.BraintreeClient;
 import com.braintreepayments.api.DropInClient;
-import com.google.gson.Gson;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -71,7 +69,7 @@ public class FlutterBraintreePlugin implements FlutterPlugin, ActivityAware, Met
       Intent intent = new Intent(activity, FlutterBraintreeCustom.class);
       intent.putExtra("type", "tokenizeCreditCard");
       intent.putExtra("authorization", (String) call.argument("authorization"));
-      assert(call.argument("request") instanceof Map);
+      assert (call.argument("request") instanceof Map);
       Map request = (Map) call.argument("request");
       intent.putExtra("cardNumber", (String) request.get("cardNumber"));
       intent.putExtra("expirationMonth", (String) request.get("expirationMonth"));
@@ -83,7 +81,7 @@ public class FlutterBraintreePlugin implements FlutterPlugin, ActivityAware, Met
       Intent intent = new Intent(activity, FlutterBraintreeCustom.class);
       intent.putExtra("type", "requestPaypalNonce");
       intent.putExtra("authorization", (String) call.argument("authorization"));
-      assert(call.argument("request") instanceof Map);
+      assert (call.argument("request") instanceof Map);
       Map request = (Map) call.argument("request");
       intent.putExtra("amount", (String) request.get("amount"));
       intent.putExtra("currencyCode", (String) request.get("currencyCode"));
@@ -93,15 +91,13 @@ public class FlutterBraintreePlugin implements FlutterPlugin, ActivityAware, Met
       intent.putExtra("billingAgreementDescription", (String) request.get("billingAgreementDescription"));
       activity.startActivityForResult(intent, CUSTOM_ACTIVITY_REQUEST_CODE);
     } else if (call.method.equals("launchDropIn")) {
-      Log.d("DROP_IN", "onMethodCall: launching");
-      Log.d("DROP_IN", "arguments: " + new Gson().toJson(call.arguments));
       Intent intent = new Intent(activity, BraintreeDropIn.class);
       intent.putExtra("clientToken", (String) call.argument("clientToken"));
       intent.putExtra("tokenizationKey", (String) call.argument("tokenizationKey"));
 
       intent.putExtra("googlePaymentRequest", (HashMap<String, Object>) call.argument("googlePaymentRequest"));
-      intent.putExtra("paypalRequest", (HashMap<String, Object>)  call.argument("paypalRequest"));
-      intent.putExtra("venmoRequest", (HashMap<String, Object>)  call.argument("venmoRequest"));
+      intent.putExtra("paypalRequest", (HashMap<String, Object>) call.argument("paypalRequest"));
+      intent.putExtra("venmoRequest", (HashMap<String, Object>) call.argument("venmoRequest"));
 
       intent.putExtra("maskCardNumber", (Boolean) call.argument("maskCardNumber"));
       intent.putExtra("maskSecurityCode", (Boolean) call.argument("maskSecurityCode"));
@@ -122,7 +118,7 @@ public class FlutterBraintreePlugin implements FlutterPlugin, ActivityAware, Met
   public boolean onActivityResult(int requestCode, int resultCode, Intent data) {
     if (activeResult == null)
       return false;
-    
+
     switch (requestCode) {
       case CUSTOM_ACTIVITY_REQUEST_CODE:
         if (resultCode == Activity.RESULT_OK) {
@@ -135,7 +131,7 @@ public class FlutterBraintreePlugin implements FlutterPlugin, ActivityAware, Met
           }
         } else if (resultCode == Activity.RESULT_CANCELED) {
           activeResult.success(null);
-        }  else {
+        } else {
           Exception error = (Exception) data.getSerializableExtra("error");
           activeResult.error("error", error.getMessage(), null);
         }

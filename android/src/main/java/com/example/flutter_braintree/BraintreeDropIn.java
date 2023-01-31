@@ -2,7 +2,6 @@ package com.example.flutter_braintree;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -22,7 +21,6 @@ import com.braintreepayments.api.PaymentMethodNonce;
 import com.braintreepayments.api.UserCanceledException;
 import com.google.android.gms.wallet.TransactionInfo;
 import com.google.android.gms.wallet.WalletConstants;
-import com.google.gson.Gson;
 
 import java.util.HashMap;
 
@@ -35,9 +33,8 @@ public class BraintreeDropIn extends AppCompatActivity implements DropInListener
         super.onCreate(savedInstanceState);
         try {
             Intent intent = getIntent();
-            String authorization = intent.getStringExtra("clientToken") != null ?
-                    intent.getStringExtra("clientToken") : intent.getStringExtra("tokenizationKey");
-            Log.d("DROP_IN", "onCreate: " + authorization);
+            String authorization = intent.getStringExtra("clientToken") != null ? intent.getStringExtra("clientToken")
+                    : intent.getStringExtra("tokenizationKey");
             dropInClient = new DropInClient(new Fragment(), authorization);
             dropInClient.setListener(this);
             launchDropIn();
@@ -81,35 +78,31 @@ public class BraintreeDropIn extends AppCompatActivity implements DropInListener
 
         dropInRequest.setMaskCardNumber(intent.getBooleanExtra("maskCardNumber", true));
         dropInRequest.setMaskSecurityCode(intent.getBooleanExtra("maskSecurityCode", true));
-        Log.d("DROP_IN", dropInRequest.getMaskCardNumber() + " " + dropInRequest.getMaskSecurityCode());
 
         dropInRequest.setVaultManagerEnabled(intent.getBooleanExtra("vaultManagerEnabled", true));
         dropInRequest.setCardDisabled(intent.getBooleanExtra("cardDisabled", false));
         dropInRequest.setVenmoDisabled(intent.getBooleanExtra("venmoDisabled", false));
         dropInRequest.setPayPalDisabled(intent.getBooleanExtra("paypalDisabled", false));
         dropInRequest.setGooglePayDisabled(intent.getBooleanExtra("googlePayDisabled", false));
-        Log.d("DROP_IN", dropInRequest.isVaultManagerEnabled()
-                + "; card: " + dropInRequest.isCardDisabled() + "; paypal: " + dropInRequest.isPayPalDisabled() );
 
         dropInRequest.setGooglePayRequest(
-                readGooglePaymentParameters((HashMap<String, Object>) intent.getSerializableExtra("googlePaymentRequest")));
+                readGooglePaymentParameters(
+                        (HashMap<String, Object>) intent.getSerializableExtra("googlePaymentRequest")));
         dropInRequest.setPayPalRequest(readPayPalParameters(
                 (HashMap<String, Object>) intent.getSerializableExtra("paypalRequest")));
 
-        Log.d("DROP_IN", "some json: " + new Gson().toJson(dropInRequest.getPayPalRequest()));
         dropInClient.launchDropIn(dropInRequest);
     }
 
     @Override
     public void onDropInSuccess(@NonNull DropInResult dropInResult) {
         String paymentMethodNonce = dropInResult.getPaymentMethodNonce().getString();
-        Log.d("DROPIN", "onDropInSuccess: " + paymentMethodNonce);
-        // use the result to update your UI and send the payment method nonce to your server
+        // use the result to update your UI and send the payment method nonce to your
+        // server
     }
 
     @Override
     public void onDropInFailure(@NonNull Exception error) {
-        Log.d("DROP_IN", "onDropInFailure: " + error.getMessage());
 
         if (error instanceof UserCanceledException) {
             // the user canceled
@@ -137,8 +130,7 @@ public class BraintreeDropIn extends AppCompatActivity implements DropInListener
             vaultRequest.setBillingAgreementDescription("Your agreement description");
             return vaultRequest;
         } else {
-            PayPalCheckoutRequest checkoutRequest =
-                    new PayPalCheckoutRequest((String) request.get("amount"));
+            PayPalCheckoutRequest checkoutRequest = new PayPalCheckoutRequest((String) request.get("amount"));
             checkoutRequest.setCurrencyCode((String) request.get("currencyCode"));
             checkoutRequest.setDisplayName((String) request.get("displayName"));
 
@@ -153,7 +145,10 @@ public class BraintreeDropIn extends AppCompatActivity implements DropInListener
                     checkoutRequest.setIntent(PayPalPaymentIntent.AUTHORIZE);
             }
 
-            checkoutRequest.setUserAction(PayPalCheckoutRequest.USER_ACTION_COMMIT.equals(request.get("payPalPaymentUserAction")) ? PayPalCheckoutRequest.USER_ACTION_COMMIT : PayPalCheckoutRequest.USER_ACTION_DEFAULT);
+            checkoutRequest.setUserAction(
+                    PayPalCheckoutRequest.USER_ACTION_COMMIT.equals(request.get("payPalPaymentUserAction"))
+                            ? PayPalCheckoutRequest.USER_ACTION_COMMIT
+                            : PayPalCheckoutRequest.USER_ACTION_DEFAULT);
 
             return checkoutRequest;
         }

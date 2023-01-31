@@ -5,7 +5,6 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 
 import com.braintreepayments.api.BraintreeClient;
 import com.braintreepayments.api.Card;
@@ -18,7 +17,6 @@ import com.braintreepayments.api.PayPalPaymentIntent;
 import com.braintreepayments.api.PayPalVaultRequest;
 import com.braintreepayments.api.PaymentMethodNonce;
 import com.braintreepayments.api.UserCanceledException;
-import com.google.gson.Gson;
 
 import java.util.HashMap;
 
@@ -56,10 +54,6 @@ public class FlutterBraintreeCustom extends AppCompatActivity implements PayPalL
     }
 
     private void onException(Exception e) {
-        System.out.println("PAYPAL_ERROR");
-        System.out.println(e);
-        System.out.println(e.getClass());
-
         if (e instanceof UserCanceledException) {
             onCancel();
         } else {
@@ -107,7 +101,6 @@ public class FlutterBraintreeCustom extends AppCompatActivity implements PayPalL
             if (cardNonce != null) {
                 onSuccess(cardNonce);
             } else {
-                Log.d("CARD", error.getMessage());
                 onException(error);// handle error
             }
         });
