@@ -25,6 +25,8 @@ apply plugin: 'com.android.application'
 apply from: "$flutterRoot/packages/flutter_tools/gradle/flutter.gradle"
 
 android {
+    namespace "com.example.flutter_braintree_example"
+    
     compileSdkVersion 31
 
     defaultConfig {
