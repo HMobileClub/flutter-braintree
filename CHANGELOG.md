@@ -1,3 +1,7 @@
+## 4.0.0-dev.4
+
+- Compiles on Android Studio Ladybug with AGP 8.3.2
+
 ## 4.0.0-dev.3
 
 - iOS minimum deployment target is now 13.0
