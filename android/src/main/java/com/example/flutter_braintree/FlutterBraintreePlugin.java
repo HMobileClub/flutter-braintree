@@ -133,6 +133,7 @@ public class FlutterBraintreePlugin implements FlutterPlugin, ActivityAware, Met
       intent.putExtra("requestBillingAgreement", (Boolean) request.get("requestBillingAgreement"));
       intent.putExtra("shippingAddressEditable", (Boolean) request.get("shippingAddressEditable"));
       intent.putExtra("shippingAddressRequired", (Boolean) request.get("shippingAddressRequired"));
+      intent.putExtra("offerPayLater", (Boolean) request.get("offerPayLater"));
 
       activity.startActivityForResult(intent, CUSTOM_ACTIVITY_REQUEST_CODE);
     } else {

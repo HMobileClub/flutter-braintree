@@ -206,6 +206,7 @@ class BraintreePayPalRequest {
     this.shippingAddressOverride,
     this.payPalPaymentIntent = PayPalPaymentIntent.authorize,
     this.payPalPaymentUserAction = PayPalPaymentUserAction.default_,
+    this.offerPayLater = false,
   });
 
   /// Amount of the transaction. If [amount] is `null`, PayPal will use the billing agreement (Vault) flow.
@@ -240,6 +241,11 @@ class BraintreePayPalRequest {
   // the address to override the shipping address defined in the customer account
   BraintreePostalAddress? shippingAddressOverride;
 
+  /// Set offerPayLater(true) on your PayPalRequest
+  /// to display Pay Later offers to eligible
+  /// customers after they have logged into PayPal.
+  bool offerPayLater;
+
   /// Converts this request object into a JSON-encodable format.
   Map<String, dynamic> toJson() => {
         if (amount != null) 'amount': amount,
@@ -254,6 +260,7 @@ class BraintreePayPalRequest {
         'shippingAddressRequired': shippingAddressRequired,
         if (shippingAddressOverride != null)
           'shippingAddressOverride': shippingAddressOverride?.toJson(),
+        'offerPayLater': offerPayLater,
       };
 }
 
