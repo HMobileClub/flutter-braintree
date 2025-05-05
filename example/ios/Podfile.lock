@@ -1,36 +1,36 @@
 PODS:
-  - Braintree/ApplePay (5.23.0):
+  - Braintree/ApplePay (5.6.3):
     - Braintree/Core
-  - Braintree/Card (5.23.0):
+  - Braintree/Card (5.6.3):
     - Braintree/Core
-  - Braintree/Core (5.23.0)
-  - Braintree/PaymentFlow (5.23.0):
-    - Braintree/Core
-    - Braintree/PayPalDataCollector
-  - Braintree/PayPal (5.23.0):
+  - Braintree/Core (5.6.3)
+  - Braintree/PaymentFlow (5.6.3):
     - Braintree/Core
     - Braintree/PayPalDataCollector
-  - Braintree/PayPalDataCollector (5.23.0)
-  - Braintree/ThreeDSecure (5.23.0):
+  - Braintree/PayPal (5.6.3):
+    - Braintree/Core
+    - Braintree/PayPalDataCollector
+  - Braintree/PayPalDataCollector (5.6.3)
+  - Braintree/ThreeDSecure (5.6.3):
     - Braintree/Card
     - Braintree/PaymentFlow
-  - Braintree/UnionPay (5.23.0):
+  - Braintree/UnionPay (5.6.3):
     - Braintree/Card
-  - Braintree/Venmo (5.23.0):
+  - Braintree/Venmo (5.6.3):
     - Braintree/Core
-  - BraintreeDropIn (9.10.1):
-    - Braintree/ApplePay (~> 5.23)
-    - Braintree/Card (~> 5.23)
-    - Braintree/Core (~> 5.23)
-    - Braintree/PayPal (~> 5.23)
-    - Braintree/ThreeDSecure (~> 5.23)
-    - Braintree/UnionPay (~> 5.23)
-    - Braintree/Venmo (~> 5.23)
+  - BraintreeDropIn (9.4.0):
+    - Braintree/ApplePay (~> 5.6.1)
+    - Braintree/Card (~> 5.6.1)
+    - Braintree/Core (~> 5.6.1)
+    - Braintree/PayPal (~> 5.6.1)
+    - Braintree/ThreeDSecure (~> 5.6.1)
+    - Braintree/UnionPay (~> 5.6.1)
+    - Braintree/Venmo (~> 5.6.1)
   - Flutter (1.0.0)
   - flutter_braintree (1.0.0):
-    - Braintree/ApplePay (~> 5.23.0)
-    - Braintree/PayPal (~> 5.23.0)
-    - BraintreeDropIn (= 9.10.1)
+    - Braintree/ApplePay (~> 5.6.3)
+    - Braintree/PayPal (~> 5.6.3)
+    - BraintreeDropIn (= 9.4.0)
     - Flutter
 
 DEPENDENCIES:
