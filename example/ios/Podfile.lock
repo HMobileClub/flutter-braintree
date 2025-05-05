@@ -1,22 +1,22 @@
 PODS:
-  - Braintree/ApplePay (5.23.0):
+  - Braintree/ApplePay (5.27.0):
     - Braintree/Core
-  - Braintree/Card (5.23.0):
+  - Braintree/Card (5.27.0):
     - Braintree/Core
-  - Braintree/Core (5.23.0)
-  - Braintree/PaymentFlow (5.23.0):
-    - Braintree/Core
-    - Braintree/PayPalDataCollector
-  - Braintree/PayPal (5.23.0):
+  - Braintree/Core (5.27.0)
+  - Braintree/PaymentFlow (5.27.0):
     - Braintree/Core
     - Braintree/PayPalDataCollector
-  - Braintree/PayPalDataCollector (5.23.0)
-  - Braintree/ThreeDSecure (5.23.0):
+  - Braintree/PayPal (5.27.0):
+    - Braintree/Core
+    - Braintree/PayPalDataCollector
+  - Braintree/PayPalDataCollector (5.27.0)
+  - Braintree/ThreeDSecure (5.27.0):
     - Braintree/Card
     - Braintree/PaymentFlow
-  - Braintree/UnionPay (5.23.0):
+  - Braintree/UnionPay (5.27.0):
     - Braintree/Card
-  - Braintree/Venmo (5.23.0):
+  - Braintree/Venmo (5.27.0):
     - Braintree/Core
   - BraintreeDropIn (9.10.1):
     - Braintree/ApplePay (~> 5.23)
@@ -28,8 +28,8 @@ PODS:
     - Braintree/Venmo (~> 5.23)
   - Flutter (1.0.0)
   - flutter_braintree (1.0.0):
-    - Braintree/ApplePay (~> 5.23.0)
-    - Braintree/PayPal (~> 5.23.0)
+    - Braintree/ApplePay (~> 5.27.0)
+    - Braintree/PayPal (~> 5.27.0)
     - BraintreeDropIn (= 9.10.1)
     - Flutter
 
@@ -49,10 +49,10 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/flutter_braintree/ios"
 
 SPEC CHECKSUMS:
-  Braintree: fcbdb324318cdf0562719c4d5629cdf71f29c220
+  Braintree: 9e88d36e660d95a89f920cec2351392d647c3fe5
   BraintreeDropIn: c1916fb471c4316b91f35a144ea9b7d2a511aad3
   Flutter: e0871f40cf51350855a761d2e70bf5af5b9b5de7
-  flutter_braintree: cf545f69445eeae64d28f1e45206ea35b7b05f41
+  flutter_braintree: 9e1289b72b6d5e64cd9b221abf366f2a8b805d76
 
 PODFILE CHECKSUM: 04b39a9ee9d140bec113b046af8a6a9a1db50cc1
 
