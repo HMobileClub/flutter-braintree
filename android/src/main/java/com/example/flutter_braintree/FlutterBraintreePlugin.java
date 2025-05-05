@@ -17,7 +17,6 @@ import io.flutter.plugin.common.MethodCall;
 import io.flutter.plugin.common.MethodChannel;
 import io.flutter.plugin.common.MethodChannel.MethodCallHandler;
 import io.flutter.plugin.common.MethodChannel.Result;
-import io.flutter.plugin.common.PluginRegistry.Registrar;
 import io.flutter.plugin.common.PluginRegistry.ActivityResultListener;
 
 public class FlutterBraintreePlugin implements FlutterPlugin, ActivityAware, MethodCallHandler, ActivityResultListener {
@@ -27,15 +26,6 @@ public class FlutterBraintreePlugin implements FlutterPlugin, ActivityAware, Met
   private Result activeResult;
 
   private FlutterBraintreeDropIn dropIn;
-
-  public static void registerWith(Registrar registrar) {
-    FlutterBraintreeDropIn.registerWith(registrar);
-    final MethodChannel channel = new MethodChannel(registrar.messenger(), "flutter_braintree.custom");
-    FlutterBraintreePlugin plugin = new FlutterBraintreePlugin();
-    plugin.activity = registrar.activity();
-    registrar.addActivityResultListener(plugin);
-    channel.setMethodCallHandler(plugin);
-  }
 
   @Override
   public void onAttachedToEngine(FlutterPluginBinding binding) {
@@ -133,6 +123,7 @@ public class FlutterBraintreePlugin implements FlutterPlugin, ActivityAware, Met
       intent.putExtra("requestBillingAgreement", (Boolean) request.get("requestBillingAgreement"));
       intent.putExtra("shippingAddressEditable", (Boolean) request.get("shippingAddressEditable"));
       intent.putExtra("shippingAddressRequired", (Boolean) request.get("shippingAddressRequired"));
+      intent.putExtra("offerPayLater", (Boolean) request.get("offerPayLater"));
 
       activity.startActivityForResult(intent, CUSTOM_ACTIVITY_REQUEST_CODE);
     } else {
