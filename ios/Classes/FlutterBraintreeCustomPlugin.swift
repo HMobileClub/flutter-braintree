@@ -37,6 +37,7 @@ public class FlutterBraintreeCustomPlugin: BaseFlutterBraintreePlugin, FlutterPl
             
             if let amount = requestInfo["amount"] as? String {
                 let paypalRequest = BTPayPalCheckoutRequest(amount: amount)
+                paypalRequest.offerPayLater = requestInfo["offerPayLater"] as? Bool ?? false
                 paypalRequest.currencyCode = requestInfo["currencyCode"] as? String
                 paypalRequest.displayName = requestInfo["displayName"] as? String
                 paypalRequest.billingAgreementDescription = requestInfo["billingAgreementDescription"] as? String
