@@ -1,3 +1,7 @@
+## 4.0.0-dev.5
+
+- iOS sdk version is now 5.27.0 for PayPal and ApplePay and 9.13.0 for Drop-in
+
 ## 4.0.0-dev.4
 
 - Compiles on Android Studio Ladybug with AGP 8.3.2
